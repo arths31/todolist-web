@@ -1,0 +1,17 @@
+<p-toolbar styleClass="border-noround p-2 px-3">
+  <div class="p-toolbar-group-left">
+    <div>{{ title }}</div>
+  </div>
+
+  <div class="p-toolbar-group-right flex gap-2">
+    <p-button
+      *ngFor="let button of toolbarButtons"
+      [icon]="button.icon || ''"
+      [label]="button.label"
+      class="mr-2"
+    ></p-button>
+  </div>
+</p-toolbar>
+<div id="content" class="p-3">
+  <ng-content></ng-content>
+</div>
