@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { Todo } from '../../../../models/todo.model';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CommonModule } from '../../../../common.module';
@@ -13,4 +13,7 @@ import { CommonModule } from '../../../../common.module';
 export class TodoItemComponent {
   @Input()
   todo!: Todo;
+
+  @Output()
+  stateChanged = new EventEmitter<any>
 }

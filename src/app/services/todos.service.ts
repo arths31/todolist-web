@@ -12,9 +12,15 @@ const API_URL = 'http://localhost:8080';
 export class TodosService {
   constructor(protected http: HttpClient) {}
 
+  getById(id: string): Observable<Todo> {
+    return this.http.get<Todo>(`${API_URL}/todos/${id}`).pipe(take(1));
+  }
+
   getAll(): Observable<Todo[]> {
-    return this.http
-      .get<Todo[]>(`${API_URL}/todos`)
-      .pipe(take(1), shareReplay());
+    return this.http.get<Todo[]>(`${API_URL}/todos`).pipe(take(1));
+  }
+
+  updateById(id: string, data: any) {
+    return this.http.patch<Todo>(`${API_URL}/todos/${id}`, data).pipe(take(1));
   }
 }

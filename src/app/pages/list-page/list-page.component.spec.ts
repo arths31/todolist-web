@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ListPageComponent } from './list-page.component';
-import { AppModule } from '../../app.module';
 import {
   HttpBackend,
   HttpClient,
@@ -14,6 +13,7 @@ import { take } from 'rxjs';
 describe('ListPageComponent', () => {
   let component: ListPageComponent;
   let fixture: ComponentFixture<ListPageComponent>;
+  let service: TodosService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -28,6 +28,7 @@ describe('ListPageComponent', () => {
       ],
     }).compileComponents();
 
+    service = TestBed.inject(TodosService);
     fixture = TestBed.createComponent(ListPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -39,7 +40,6 @@ describe('ListPageComponent', () => {
 
   it('should have all mocked todos rendered', () => {
     const element: HTMLElement = fixture.nativeElement;
-    const service = TestBed.inject(TodosService);
 
     service
       .getAll()

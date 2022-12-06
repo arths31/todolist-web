@@ -1,5 +1,6 @@
 import {
   HttpBackend,
+  HttpErrorResponse,
   HttpEvent,
   HttpRequest,
   HttpResponse,
@@ -14,10 +15,19 @@ export class MockBackend extends HttpBackend {
   } = {
     GET: {
       todos: this.getTodos,
+      todos_id: this.getTodoById,
+    },
+    PATCH: {
+      todos_id: this.updateTodoById,
     },
   };
 
   private todos: Todo[] = [
+    {
+      id: '3',
+      title: 'Install Void Linux',
+      state: false,
+    },
     {
       id: '0',
       title: 'Do the dishes',
@@ -30,9 +40,46 @@ export class MockBackend extends HttpBackend {
     },
   ];
 
-  private getTodos(context: any, path: any, params: any): HttpResponse<Todo[]> {
+  private updateTodoById(
+    context: any,
+    path: any,
+    params: any,
+    body: any
+  ): HttpResponse<Todo> {
+    const todo = context.todos.find((todo: Todo) => todo.id === path[1]);
+    if (todo) {
+      for (const [field, value] of Object.entries(body)) {
+        todo[field] = value;
+      }
+      return new HttpResponse<Todo>({ body: todo });
+    } else {
+      throw new HttpErrorResponse({
+        status: 404,
+        statusText: 'Todo not found',
+      });
+    }
+  }
+
+  private getTodoById(context: any, path: any): HttpResponse<Todo> {
+    const todo = context.todos.find((todo: Todo) => todo.id === path[1]);
+    if (todo) {
+      return new HttpResponse<Todo>({
+        body: todo,
+      });
+    } else {
+      throw new HttpErrorResponse({
+        status: 404,
+        statusText: 'Todo not found',
+      });
+    }
+  }
+
+  private getTodos(context: any): HttpResponse<Todo[]> {
+    const sorted = [...context.todos].sort(
+      (a: Todo, b: Todo) => +a.state - +b.state
+    );
     return new HttpResponse<Todo[]>({
-      body: context.todos,
+      body: sorted,
     });
   }
 
@@ -46,16 +93,19 @@ export class MockBackend extends HttpBackend {
     const method = req.method;
     const path = url.root.children[PRIMARY_OUTLET].segments.map((p) => p.path);
 
-    const processingMethod: any = this.processingMethods[method]?.[path[0]];
+    const processingMethod: any =
+      this.processingMethods[method]?.[
+        `${path[0]}${path.length > 1 ? '_id' : ''}`
+      ];
 
-    return of(
-      !processingMethod
-        ? new HttpResponse({
-            status: 404,
-            url: url.toString(),
-            statusText: 'Not mocked',
-          })
-        : processingMethod(this, path, params)
-    );
+    if (!processingMethod) {
+      throw new HttpErrorResponse({
+        status: 404,
+        url: url.toString(),
+        statusText: 'Not mocked',
+      });
+    } else {
+      return of(processingMethod(this, path, params, req.body));
+    }
   }
 }

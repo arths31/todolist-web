@@ -1,8 +1,9 @@
 <app-layout title="TodoList" [toolbarButtons]="toolbarButtons">
+  <p-toast></p-toast>
   <div class="border-1 surface-border border-round-sm">
     <p-table [loading]="!(todos$ | async)" [value]="(todos$ | async) || []">
       <ng-template pTemplate="body" let-todo>
-        <tr app-todo-item [todo]="todo"></tr>
+        <tr app-todo-item [todo]="todo" (stateChanged)="todoStateChanged(todo, $event)"></tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>

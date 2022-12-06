@@ -2,24 +2,65 @@ import { Component } from '@angular/core';
 import { LayoutComponent, ToolbarButton } from '../../layout/layout.component';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '../../common.module';
-import { Observable } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  shareReplay,
+  switchMap,
+} from 'rxjs';
 import { Todo } from '../../models/todo.model';
 import { TodosService } from '../../services/todos.service';
-import { CheckboxModule } from 'primeng/checkbox';
 import { TodoItemComponent } from './components/todo-item/todo-item.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-list-page',
   templateUrl: './list-page.component.html',
   styleUrls: ['./list-page.component.css'],
   standalone: true,
-  imports: [LayoutComponent, TableModule, CommonModule, TodoItemComponent],
+  imports: [
+    LayoutComponent,
+    TableModule,
+    CommonModule,
+    TodoItemComponent,
+    ToastModule,
+  ],
+  providers: [MessageService],
 })
 export class ListPageComponent {
   protected toolbarButtons: ToolbarButton[] = [];
   protected todos$: Observable<Todo[]>;
 
-  constructor(protected todosService: TodosService) {
-    this.todos$ = todosService.getAll();
+  protected refresh$ = new BehaviorSubject(null);
+
+  constructor(
+    protected todosService: TodosService,
+    private messageService: MessageService
+  ) {
+    this.todos$ = combineLatest([this.refresh$]).pipe(
+      switchMap(() => todosService.getAll()),
+      shareReplay()
+    );
+  }
+
+  todoStateChanged(todo: Todo, value: boolean) {
+    this.todosService
+      .updateById(todo.id, {
+        state: value,
+      })
+      .subscribe({
+        next: () => this.refresh$.next(null),
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: `Unable to update todo "${todo.title}"`,
+            detail: error.message,
+          });
+          // Fix to restore previous checkbox value on error
+          setTimeout(() => (todo.state = !value), 0);
+        },
+      });
   }
 }

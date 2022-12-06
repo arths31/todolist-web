@@ -31,12 +31,40 @@ describe('TodosService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should have two mocked todos', () => {
-    service
-      .getAll()
-      .pipe(take(1))
-      .subscribe((todos) => {
-        expect(todos.length).toEqual(2);
+  it('should update todo correctly', () => {
+    const data = {
+      title: 'It works',
+      state: true,
+    };
+    service.updateById('0', data).pipe(take(1)).subscribe();
+
+    service.getById('0').subscribe((todo) => {
+      expect(todo.title).toEqual(data.title);
+      expect(todo.state).toEqual(data.state);
+    });
+  });
+
+  it('done todos should be at end of list', () => {
+    service.getAll().subscribe((todos) => {
+      const waitingTodo = todos.find((todo) => !todo.state)!;
+      const waitingTodoIndex = todos.indexOf(waitingTodo);
+
+      service
+        .updateById(waitingTodo.id, { state: true })
+        .pipe(take(1))
+        .subscribe();
+
+      service.getAll().subscribe((updatedTodos) => {
+        expect(
+          updatedTodos.findIndex((todo) => todo.id === waitingTodo.id)
+        ).not.toEqual(waitingTodoIndex);
       });
+    });
+  });
+
+  it('should have three mocked todos', () => {
+    service.getAll().subscribe((todos) => {
+      expect(todos.length).toEqual(3);
+    });
   });
 });

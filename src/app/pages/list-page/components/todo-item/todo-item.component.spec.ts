@@ -31,6 +31,13 @@ describe('TodoItemComponent', () => {
     );
   });
 
+  it('should strike text when state is marked as done', () => {
+    expect(fixture.nativeElement.querySelector('line-through')).toBeNull();
+    component.todo.state = true;
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('line-through')).toBeDefined();
+  });
+
   it('should render state correcly', () => {
     const element: HTMLElement =
       fixture.nativeElement.querySelector('p-checkbox');
