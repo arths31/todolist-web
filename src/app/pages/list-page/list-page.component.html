@@ -1,3 +1,14 @@
-<app-layout title="todoo" [toolbarButtons]="toolbarButtons">
-  <p>list-page works!</p>
+<app-layout title="TodoList" [toolbarButtons]="toolbarButtons">
+  <div class="border-1 surface-border border-round-sm">
+    <p-table [loading]="!(todos$ | async)" [value]="(todos$ | async) || []">
+      <ng-template pTemplate="body" let-todo>
+        <tr app-todo-item [todo]="todo"></tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td class="text-center">No task to do 😄</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </app-layout>
