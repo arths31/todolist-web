@@ -1,19 +1,20 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import { Todo } from '../../../../models/todo.model';
 import { CheckboxModule } from 'primeng/checkbox';
+import { PanelModule } from 'primeng/panel';
 import { CommonModule } from '../../../../common.module';
-import {RouterLink} from "@angular/router";
+import {Todo} from "../../../../models/todo.model";
 
 @Component({
-  selector: '[app-todo-item]',
-  templateUrl: './todo-item.component.html',
+  selector: 'app-todo-detail',
+  templateUrl: './todo-detail.component.html',
+  imports: [CheckboxModule, PanelModule, CommonModule],
   standalone: true,
-  imports: [CheckboxModule, CommonModule, RouterLink],
 })
-export class TodoItemComponent {
+export class TodoDetailComponent {
   @Input()
   todo!: Todo;
 
   @Output()
   stateChanged = new EventEmitter<any>
+
 }

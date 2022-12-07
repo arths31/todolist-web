@@ -18,7 +18,6 @@ import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-list-page',
   templateUrl: './list-page.component.html',
-  styleUrls: ['./list-page.component.css'],
   standalone: true,
   imports: [
     LayoutComponent,
@@ -36,7 +35,7 @@ export class ListPageComponent {
   protected refresh$ = new BehaviorSubject(null);
 
   constructor(
-    protected todosService: TodosService,
+    private todosService: TodosService,
     private messageService: MessageService
   ) {
     this.todos$ = combineLatest([this.refresh$]).pipe(

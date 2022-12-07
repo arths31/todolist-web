@@ -1,0 +1,13 @@
+<p-panel>
+  <ng-template pTemplate="header">
+    <p-checkbox
+      [binary]="true"
+      (onChange)="stateChanged.emit($event.checked)"
+      [(ngModel)]="todo.state"
+      class="mr-4"
+    ></p-checkbox>
+    <div [ngClass]="{ 'line-through': todo.state }" class="todo-title">{{ todo.title }}</div>
+  </ng-template>
+  <div class="text-sm mb-3 text-color-secondary">Description</div>
+  <div class="todo-description">{{ todo.description || 'None' }}</div>
+</p-panel>

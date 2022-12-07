@@ -27,16 +27,19 @@ export class MockBackend extends HttpBackend {
       id: '3',
       title: 'Install Void Linux',
       state: false,
+      description: '',
     },
     {
       id: '0',
       title: 'Do the dishes',
       state: true,
+      description: 'There is a lot',
     },
     {
       id: '1',
       title: 'Call Sogeti',
       state: false,
+      description: 'Maybe my todo list will get attention',
     },
   ];
 

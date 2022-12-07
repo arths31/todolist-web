@@ -9,6 +9,7 @@ import {
 import { MockBackend } from '../../tools/mock-backend';
 import { TodosService } from '../../services/todos.service';
 import { take } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ListPageComponent', () => {
   let component: ListPageComponent;
@@ -17,7 +18,7 @@ describe('ListPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ListPageComponent, HttpClientModule],
+      imports: [ListPageComponent, HttpClientModule, RouterTestingModule],
       providers: [
         MockBackend,
         {

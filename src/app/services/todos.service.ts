@@ -10,7 +10,7 @@ const API_URL = 'http://localhost:8080';
   providedIn: 'root',
 })
 export class TodosService {
-  constructor(protected http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   getById(id: string): Observable<Todo> {
     return this.http.get<Todo>(`${API_URL}/todos/${id}`).pipe(take(1));

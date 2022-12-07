@@ -1,4 +1,4 @@
-<app-layout title="TodoList" [toolbarButtons]="toolbarButtons">
+<app-layout title="Todo List" [toolbarButtons]="toolbarButtons">
   <p-toast></p-toast>
   <div class="border-1 surface-border border-round-sm">
     <p-table [loading]="!(todos$ | async)" [value]="(todos$ | async) || []">

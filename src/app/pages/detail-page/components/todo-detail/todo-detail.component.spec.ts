@@ -1,24 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TodoItemComponent } from './todo-item.component';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TodoDetailComponent } from './todo-detail.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('TodoItemComponent', () => {
-  let component: TodoItemComponent;
-  let fixture: ComponentFixture<TodoItemComponent>;
+describe('TodoDetailComponent', () => {
+  let component: TodoDetailComponent;
+  let fixture: ComponentFixture<TodoDetailComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TodoItemComponent, RouterTestingModule],
+      imports: [TodoDetailComponent, BrowserAnimationsModule],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TodoItemComponent);
+    fixture = TestBed.createComponent(TodoDetailComponent);
     component = fixture.componentInstance;
     component.todo = {
-      id: '1337',
-      title: 'Test todo',
+      id: '42',
+      title: 'Test todo detail',
       state: false,
-      description: '',
+      description: 'yay',
     };
     fixture.detectChanges();
   });
@@ -28,9 +28,15 @@ describe('TodoItemComponent', () => {
   });
 
   it('should render title correcly', () => {
-    expect(fixture.nativeElement.querySelectorAll('td')[1].innerText).toEqual(
-      component.todo.title
-    );
+    expect(
+      fixture.nativeElement.querySelector('.todo-title').innerText
+    ).toEqual(component.todo.title);
+  });
+
+  it('should render description correcly', () => {
+    expect(
+      fixture.nativeElement.querySelector('.todo-description').innerText
+    ).toEqual(component.todo.description);
   });
 
   it('should strike text when state is marked as done', () => {

@@ -1,0 +1,4 @@
+<app-layout title="Todo Detail" [backButton]="true" *ngIf="todo$ | async as todo">
+  <p-toast></p-toast>
+  <app-todo-detail [todo]="todo" (stateChanged)="todoStateChanged(todo, $event)"></app-todo-detail>
+</app-layout>
