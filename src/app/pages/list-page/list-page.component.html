@@ -1,9 +1,18 @@
 <app-layout title="Todo List" [toolbarButtons]="toolbarButtons">
   <p-toast></p-toast>
+  <app-add-todo-dialog
+    *ngIf="isAddDialogShown"
+    [show]="isAddDialogShown"
+    (close)="handleAddDialog($event)"
+  ></app-add-todo-dialog>
   <div class="border-1 surface-border border-round-sm">
     <p-table [loading]="!(todos$ | async)" [value]="(todos$ | async) || []">
       <ng-template pTemplate="body" let-todo>
-        <tr app-todo-item [todo]="todo" (stateChanged)="todoStateChanged(todo, $event)"></tr>
+        <tr
+          app-todo-item
+          [todo]="todo"
+          (stateChanged)="todoStateChanged(todo, $event)"
+        ></tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>

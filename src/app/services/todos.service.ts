@@ -20,6 +20,10 @@ export class TodosService {
     return this.http.get<Todo[]>(`${API_URL}/todos`).pipe(take(1));
   }
 
+  create(todo: Todo): Observable<Todo> {
+    return this.http.post<Todo>(`${API_URL}/todos`, todo).pipe(take(1));
+  }
+
   updateById(id: string, data: any) {
     return this.http.patch<Todo>(`${API_URL}/todos/${id}`, data).pipe(take(1));
   }

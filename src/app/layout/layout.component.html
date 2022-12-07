@@ -17,6 +17,8 @@
       [icon]="button.icon || ''"
       [label]="button.label"
       class="mr-2"
+      (click)="button.action()"
+      [styleClass]="['p-button-sm', button.style].join(' ')"
     ></p-button>
   </div>
 </p-toolbar>

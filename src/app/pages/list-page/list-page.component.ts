@@ -14,6 +14,7 @@ import { TodosService } from '../../services/todos.service';
 import { TodoItemComponent } from './components/todo-item/todo-item.component';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { AddTodoDialogComponent } from './components/add-todo-dialog/add-todo-dialog.component';
 
 @Component({
   selector: 'app-list-page',
@@ -25,14 +26,26 @@ import { MessageService } from 'primeng/api';
     CommonModule,
     TodoItemComponent,
     ToastModule,
+    AddTodoDialogComponent,
   ],
   providers: [MessageService],
 })
 export class ListPageComponent {
-  protected toolbarButtons: ToolbarButton[] = [];
-  protected todos$: Observable<Todo[]>;
+  protected toolbarButtons: ToolbarButton[] = [
+    {
+      style: 'p-button-outlined',
+      icon: 'pi pi-plus',
+      label: 'Add',
+      action: () => {
+        this.isAddDialogShown = true;
+      },
+    },
+  ];
 
+  protected todos$: Observable<Todo[]>;
   protected refresh$ = new BehaviorSubject(null);
+
+  protected isAddDialogShown = false;
 
   constructor(
     private todosService: TodosService,
@@ -42,6 +55,22 @@ export class ListPageComponent {
       switchMap(() => todosService.getAll()),
       shareReplay()
     );
+  }
+
+  handleAddDialog(value: Todo | null) {
+    if (value) {
+      this.todosService.create(value).subscribe({
+        next: () => this.refresh$.next(null),
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: `Unable to add todo "${value.title}"`,
+            detail: error.message,
+          });
+        },
+      });
+    }
+    this.isAddDialogShown = false;
   }
 
   todoStateChanged(todo: Todo, value: boolean) {

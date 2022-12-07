@@ -20,6 +20,9 @@ export class MockBackend extends HttpBackend {
     PATCH: {
       todos_id: this.updateTodoById,
     },
+    POST: {
+      todos: this.createTodo,
+    },
   };
 
   private todos: Todo[] = [
@@ -59,6 +62,29 @@ export class MockBackend extends HttpBackend {
       throw new HttpErrorResponse({
         status: 404,
         statusText: 'Todo not found',
+      });
+    }
+  }
+
+  private createTodo(
+    context: any,
+    path: any,
+    params: any,
+    body: any
+  ): HttpResponse<Todo> {
+    if ('title' in body) {
+      const todo: Todo = {
+        ...body,
+        id: String(Math.floor(Math.random() * (1000 - 3 + 1)) + 3),
+        description: body.description || '',
+        state: false,
+      };
+      context.todos = [todo, ...context.todos];
+      return new HttpResponse<Todo>({ body: todo });
+    } else {
+      throw new HttpErrorResponse({
+        status: 400,
+        statusText: 'Title is required',
       });
     }
   }

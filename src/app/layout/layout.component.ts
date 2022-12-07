@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
 
 export interface ToolbarButton {
   label: string;
-  color: string;
+  style: string;
   icon?: string;
   action(): void;
 }
@@ -13,7 +13,6 @@ export interface ToolbarButton {
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css'],
   standalone: true,
   imports: [ToolbarModule, CommonModule, RouterLink],
 })

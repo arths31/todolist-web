@@ -1,0 +1,49 @@
+<p-dialog
+  header="Title"
+  [visible]="show"
+  [closable]="false"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <ng-template pTemplate="header">
+    <div class="font-bold">Add a new todo</div>
+  </ng-template>
+  <div class="w-24rem">
+    <form #form >
+      <input
+        type="text"
+        name="todo-title"
+        class="w-full mb-3"
+        pInputText
+        required
+        placeholder="Title"
+        [(ngModel)]="todoToBeCreated.title"
+      />
+      <textarea
+        rows="5"
+        placeholder="Description"
+        cols="30"
+        class="w-full"
+        style="resize: none"
+        [(ngModel)]="todoToBeCreated.description"
+        name="todo-description"
+        pInputTextarea
+      ></textarea>
+    </form>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button
+      styleClass="p-button-sm p-button-danger p-button-outlined"
+      label="Cancel"
+      (click)="close.emit(null)"
+    ></p-button>
+    <p-button
+      name="save-button"
+      styleClass="p-button-sm"
+      [disabled]="!form.checkValidity()"
+      (click)="close.emit(this.todoToBeCreated)"
+      label="Save"
+    ></p-button>
+  </ng-template>
+</p-dialog>
