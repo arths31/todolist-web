@@ -81,6 +81,7 @@ export class MockBackend extends HttpBackend {
         id: String(Math.floor(Math.random() * (1000 - 3 + 1)) + 3),
         description: body.description || '',
         state: false,
+        createdOn: new Date(),
       };
       context.todos = [todo, ...context.todos];
       return new HttpResponse<Todo>({ body: todo });
