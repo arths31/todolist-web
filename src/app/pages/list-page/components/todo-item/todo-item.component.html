@@ -8,3 +8,6 @@
 <td [ngClass]="{ 'line-through': todo.state }">
   <a class="no-underline text-color" [routerLink]="['todo', todo.id]">{{ todo.title }}</a>
 </td>
+<td>
+    {{ todo.createdOn | date:"short" }}
+</td>

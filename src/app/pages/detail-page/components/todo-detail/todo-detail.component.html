@@ -9,5 +9,7 @@
     <div [ngClass]="{ 'line-through': todo.state }" class="todo-title">{{ todo.title }}</div>
   </ng-template>
   <div class="text-sm mb-3 text-color-secondary">Description</div>
-  <div class="todo-description">{{ todo.description || 'None' }}</div>
+  <div class="todo-description mb-5">{{ todo.description || 'None' }}</div>
+  <div class="text-sm mb-1 text-color-secondary">Created on</div>
+  <div class="todo-description">{{ todo.createdOn | date:"short" }}</div>
 </p-panel>
